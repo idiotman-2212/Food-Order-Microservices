@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.microservices.userservice.UserServiceApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 16.97 s -- in com.microservices.userservice.UserServiceApplicationTests
