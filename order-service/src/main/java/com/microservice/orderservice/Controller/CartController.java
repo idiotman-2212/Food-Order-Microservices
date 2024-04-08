@@ -2,7 +2,7 @@ package com.microservice.orderservice.Controller;
 
 import com.microservice.orderservice.Payload.Request.CartRequest;
 import com.microservice.orderservice.Payload.Response.BaseResponse;
-import com.microservice.orderservice.Payload.Response.CartResponse;
+import com.microservice.orderservice.Payload.Response.Order.CartResponse;
 import com.microservice.orderservice.Service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

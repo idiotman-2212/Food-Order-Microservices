@@ -2,12 +2,10 @@ package com.microservice.orderservice.Controller;
 
 import com.microservice.orderservice.Payload.Request.OrderRequest;
 import com.microservice.orderservice.Payload.Response.BaseResponse;
-import com.microservice.orderservice.Payload.Response.CartResponse;
-import com.microservice.orderservice.Payload.Response.OrderResponse;
+import com.microservice.orderservice.Payload.Response.Order.OrderResponse;
 import com.microservice.orderservice.Service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -78,4 +76,5 @@ public class OrderController {
             return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
         }
     }
+
 }

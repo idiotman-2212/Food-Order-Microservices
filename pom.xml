@@ -43,6 +43,8 @@
         <module>user-service</module>
         <module>payment-service</module>
         <module>api-gateway</module>
+        <module>notification-service</module>
+        <module>discovery-server</module>
     </modules>
 
     <properties>

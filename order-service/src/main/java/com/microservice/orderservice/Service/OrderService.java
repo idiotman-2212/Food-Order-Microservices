@@ -4,13 +4,17 @@ import com.microservice.orderservice.Entity.CartEntity;
 import com.microservice.orderservice.Entity.OrderEntity;
 import com.microservice.orderservice.Helper.OrderConverter;
 import com.microservice.orderservice.Payload.Request.OrderRequest;
-import com.microservice.orderservice.Payload.Response.OrderResponse;
+import com.microservice.orderservice.Payload.Response.Order.CartResponse;
+import com.microservice.orderservice.Payload.Response.Order.OrderResponse;
 import com.microservice.orderservice.Repository.CartRepository;
 import com.microservice.orderservice.Repository.OrderRepository;
 import com.microservice.orderservice.Service.Imp.OrderServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
+import java.net.CacheResponse;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,6 +42,10 @@ public class OrderService implements OrderServiceImp {
             orderResponse.setOrderDesc(o.getOrderDesc());
             orderResponse.setOrderDate(o.getOrderDate());
 
+            CartResponse cartResponse = new CartResponse();
+            cartResponse.getId();
+            orderResponse.setCartResponse(cartResponse);
+
             responseList.add(orderResponse);
         }
         return responseList;
@@ -60,9 +68,20 @@ public class OrderService implements OrderServiceImp {
 
     @Override
     public OrderResponse getOrderById(int orderId) {
-        Optional<OrderEntity> orderEntity = orderRepository.findById(orderId);
-        if(orderEntity.isPresent()){
-            return OrderConverter.toOrderResponse(orderEntity.get());
+        Optional<OrderEntity> optionalOrder = orderRepository.findById(orderId);
+        if(optionalOrder.isPresent()){
+            OrderEntity orderEntity = optionalOrder.get();
+            OrderResponse orderResponse = new OrderResponse();
+            orderResponse.setId(orderEntity.getId());
+            orderResponse.setOrderDate(orderEntity.getOrderDate());
+            orderResponse.setOrderDesc(orderEntity.getOrderDesc());
+            orderResponse.setOrderFee(orderEntity.getOrderFee());
+
+            CartResponse cartResponse = new CartResponse();
+            cartResponse.getId();
+            orderResponse.setCartResponse(cartResponse);
+
+            return orderResponse;
         }else {
             return null;
         }
