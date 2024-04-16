@@ -22,6 +22,9 @@ public class OrderEntity {
     @Column(name = "order_fee")
     private Double orderFee;
 
+    @Column(name = "product_id")
+    private Integer productId;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cart_id")
     private CartEntity cart;
@@ -64,5 +67,13 @@ public class OrderEntity {
 
     public void setCart(CartEntity cart) {
         this.cart = cart;
+    }
+
+    public Integer getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 }

@@ -23,7 +23,7 @@ public class ProductController {
     private ProductRepository productRepository;
 
     @GetMapping("")
-    public ResponseEntity<BaseResponse<List<ProductResponse>>> getAllProducts() {
+    public ResponseEntity<?> getAllProducts() {
         List<ProductResponse> productResponseList = productService.getAllProduct();
         BaseResponse<List<ProductResponse>> baseResponse = new BaseResponse<>();
         baseResponse.setMessage("Get all product");
@@ -34,10 +34,9 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BaseResponse<ProductResponse>> getProductById(@PathVariable Integer id) {
+    public ResponseEntity<?> getProductById(@PathVariable Integer id) {
         ProductResponse product = productService.getProductById(id);
         BaseResponse<ProductResponse> baseResponse = new BaseResponse<>();
-
         if (product != null) {
             baseResponse.setMessage("Get product by id");
             baseResponse.setData(product);

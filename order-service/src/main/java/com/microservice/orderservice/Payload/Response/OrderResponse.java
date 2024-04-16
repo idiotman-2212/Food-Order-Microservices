@@ -3,18 +3,22 @@ package com.microservice.orderservice.Payload.Response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
-public class OrderResponse {
+public class OrderResponse implements Serializable {
     private int id;
     private Date orderDate;
     private String orderDesc;
     private Double orderFee;
 
-    @JsonProperty("cart")
+    private Integer productId;
+
+    @JsonProperty("products")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private ProductResponse productResponse;
+
+    @JsonProperty("carts")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private CartResponse cartResponse;
 
@@ -56,5 +60,21 @@ public class OrderResponse {
 
     public void setCartResponse(CartResponse cartResponse) {
         this.cartResponse = cartResponse;
+    }
+
+    public ProductResponse getProductResponse() {
+        return productResponse;
+    }
+
+    public void setProductResponse(ProductResponse productResponse) {
+        this.productResponse = productResponse;
+    }
+
+    public Integer getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 }

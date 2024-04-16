@@ -2,12 +2,14 @@ package com.microservice.orderservice.Controller;
 
 import com.microservice.orderservice.Payload.Request.OrderRequest;
 import com.microservice.orderservice.Payload.Response.BaseResponse;
-import com.microservice.orderservice.Payload.Response.Order.OrderResponse;
+import com.microservice.orderservice.Payload.Response.OrderResponse;
+import com.microservice.orderservice.Service.CallAPI;
 import com.microservice.orderservice.Service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 
@@ -16,6 +18,8 @@ import java.util.List;
 public class OrderController {
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private CallAPI callAPI;
 
     @GetMapping("")
     public ResponseEntity<?> getAllOrder() {
@@ -27,6 +31,15 @@ public class OrderController {
         return new ResponseEntity<>(baseResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getOrderById(@PathVariable int id) {
+        OrderResponse orderResponses = orderService.getOrderById(id);
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.setMessage("Get order by id");
+        baseResponse.setStatusCode(200);
+        baseResponse.setData(orderResponses);
+        return new ResponseEntity<>(baseResponse, HttpStatus.OK);
+    }
     @PostMapping("")
     public ResponseEntity<?> insertOrder(@RequestBody OrderRequest orderRequest) {
         boolean isSuccess = orderService.insertOrder(orderRequest);
@@ -45,8 +58,8 @@ public class OrderController {
     }
 
     @PutMapping("/{orderId}")
-    public ResponseEntity<?> updateOrderById(@PathVariable int orderId, @RequestParam String orderDesc, @RequestParam Double orderFee, @RequestParam int cartId) {
-        boolean idUpdate = orderService.updateOrderById(orderId, orderDesc, orderFee, cartId);
+    public ResponseEntity<?> updateOrderById(@PathVariable int orderId, @RequestParam String orderDesc, @RequestParam Double orderFee, @RequestParam int cartId, @RequestParam int productId) {
+        boolean idUpdate = orderService.updateOrderById(orderId, orderDesc, orderFee, cartId, productId);
         if (idUpdate) {
             BaseResponse baseResponse = new BaseResponse();
             baseResponse.setMessage("Update order successfully");

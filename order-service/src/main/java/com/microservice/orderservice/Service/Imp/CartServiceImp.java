@@ -1,7 +1,7 @@
 package com.microservice.orderservice.Service.Imp;
 
 import com.microservice.orderservice.Payload.Request.CartRequest;
-import com.microservice.orderservice.Payload.Response.Order.CartResponse;
+import com.microservice.orderservice.Payload.Response.CartResponse;
 
 import java.util.List;
 

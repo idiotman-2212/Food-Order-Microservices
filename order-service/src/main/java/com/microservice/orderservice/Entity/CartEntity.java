@@ -1,6 +1,5 @@
 package com.microservice.orderservice.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 

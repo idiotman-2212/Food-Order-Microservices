@@ -1,7 +1,7 @@
 package com.microservice.orderservice.Helper;
 
 import com.microservice.orderservice.Entity.OrderEntity;
-import com.microservice.orderservice.Payload.Response.Order.OrderResponse;
+import com.microservice.orderservice.Payload.Response.OrderResponse;
 import org.springframework.stereotype.Component;
 
 @Component

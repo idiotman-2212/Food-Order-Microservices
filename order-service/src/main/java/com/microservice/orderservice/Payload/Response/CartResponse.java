@@ -1,16 +1,14 @@
 package com.microservice.orderservice.Payload.Response;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.math.BigDecimal;
+import java.io.Serializable;
 import java.util.Set;
 
-public class CartResponse {
+public class CartResponse implements Serializable {
     private int id;
     private int userId;
     private Set<OrderResponse> orderResponseSet;
     private UserResponse userResponse;
+
 
     public int getId() {
         return id;

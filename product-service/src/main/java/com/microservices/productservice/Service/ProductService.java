@@ -2,6 +2,7 @@ package com.microservices.productservice.Service;
 
 import com.microservices.productservice.Entity.CategoryEntity;
 import com.microservices.productservice.Entity.ProductEntity;
+import com.microservices.productservice.Payload.Response.CategoryResponse;
 import com.microservices.productservice.Payload.Response.ProductResponse;
 import com.microservices.productservice.Repository.ProductRepository;
 import com.microservices.productservice.Service.Imp.ProductServiceImp;
@@ -15,14 +16,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.CacheResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,7 +55,6 @@ public class ProductService implements ProductServiceImp {
         productEntity.setQuantity(quantity);
         productEntity.setDescription(description);
 
-
         CategoryEntity categoryEntity = new CategoryEntity();
         categoryEntity.setId(idCategory);
         productEntity.setCategory(categoryEntity);
@@ -69,10 +67,37 @@ public class ProductService implements ProductServiceImp {
 
     @Override
     public List<ProductResponse> getAllProduct() {
-        List<ProductEntity> products = productRepository.findAll();
-        return products.stream()
-                .map(ProductConverter::toProductResponse)
-                .collect(Collectors.toList());
+        List<ProductEntity> list = productRepository.findAll();
+        List<ProductResponse> responseList = new ArrayList<>();
+
+        for (ProductEntity item : list) {
+            ProductResponse productResponse = new ProductResponse();
+            productResponse.setId(item.getId());
+            productResponse.setName(item.getName());
+            productResponse.setImage(item.getImage());
+            productResponse.setQuantity(item.getQuantity());
+            productResponse.setDescription(item.getDescription());
+
+            if (item.getPrice() != null) {
+                productResponse.setPrice(item.getPrice().doubleValue());
+            } else {
+                productResponse.setPrice(0.0);
+            }
+
+            CategoryEntity categoryEntity = item.getCategory();
+            if (categoryEntity != null) {
+                CategoryResponse categoryResponse = new CategoryResponse();
+                categoryResponse.setName(categoryEntity.getName());
+                categoryResponse.setId(categoryEntity.getId());
+                categoryResponse.setCreateDate(categoryEntity.getCreateDate());
+                productResponse.setCategory(categoryResponse);
+            }
+            productResponse.setCreateDate(item.getCreateDate());
+
+            responseList.add(productResponse);
+        }
+
+        return responseList;
     }
 
     @Override
@@ -85,10 +110,28 @@ public class ProductService implements ProductServiceImp {
 
     @Override
     public ProductResponse getProductById(int id) {
-        Optional<ProductEntity> productEntityOptional = productRepository.findById(id);
-        if (productEntityOptional.isPresent()) {
-            return ProductConverter.toProductResponse(productEntityOptional.get());
-        } else {
+        Optional<ProductEntity> productOptional = productRepository.findById(id);
+
+        if (productOptional.isPresent()) {
+            ProductEntity productEntity = productOptional.get();
+            ProductResponse productResponse = new ProductResponse();
+            productResponse.setId(productEntity.getId());
+            productResponse.setName(productEntity.getName());
+            productResponse.setImage(productEntity.getImage());
+            productResponse.setDescription(productEntity.getDescription());
+            productResponse.setPrice(productEntity.getPrice());
+            productResponse.setCreateDate(productEntity.getCreateDate());
+
+            CategoryEntity categoryEntity = productEntity.getCategory();
+            if (categoryEntity != null) {
+                CategoryResponse categoryResponse = new CategoryResponse();
+                categoryResponse.setName(categoryEntity.getName());
+                categoryResponse.setId(categoryEntity.getId());
+                categoryResponse.setCreateDate(categoryEntity.getCreateDate());
+                productResponse.setCategory(categoryResponse);
+            }
+            return productResponse;
+        }else {
             return null;
         }
     }

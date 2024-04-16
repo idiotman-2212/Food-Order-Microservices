@@ -8,6 +8,8 @@ public class OrderRequest {
     private Double orderFee;
     private int cartId;
 
+    private int productId;
+
     public Date getOrderDate() {
         return orderDate;
     }
@@ -38,5 +40,13 @@ public class OrderRequest {
 
     public void setCartId(int cartId) {
         this.cartId = cartId;
+    }
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
 }

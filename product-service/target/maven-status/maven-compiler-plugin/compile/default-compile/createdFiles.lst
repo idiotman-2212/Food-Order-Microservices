@@ -3,6 +3,7 @@ com\microservices\productservice\ProductServiceApplication.class
 com\microservices\productservice\Payload\Response\BaseResponse.class
 com\microservices\productservice\Repository\ProductRepository.class
 com\microservices\productservice\Service\ProductService.class
+com\microservices\productservice\Config\WebClientConfig.class
 com\microservices\productservice\Controller\ProductController.class
 com\microservices\productservice\Helper\CategoryConverter.class
 com\microservices\productservice\Payload\Response\CategoryResponse.class

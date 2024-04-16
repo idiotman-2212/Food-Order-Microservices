@@ -1,5 +1,6 @@
 com\microservices\userservice\Controller\ApiUserController.class
 com\microservices\userservice\Helper\JwtHelper.class
+com\microservices\userservice\Controller\ApiLoggerController.class
 com\microservices\userservice\Payload\Response\UserResponse.class
 com\microservices\userservice\Security\SecurityConfig.class
 com\microservices\userservice\Payload\Response\BaseResponse.class

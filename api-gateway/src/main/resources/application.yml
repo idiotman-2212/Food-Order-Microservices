@@ -7,28 +7,40 @@ spring:
   cloud:
     gateway:
       routes:
+        # User-service
         - id: user-service
           uri: http://localhost:8080
           predicates:
             - Path=/api/users/**
 #          filters:
 #            - AuthFilter
-        - id: product-service
+        # Product-service
+        - id: product-service-products
           uri: http://localhost:8081
           predicates:
             - Path=/api/products/**
+        - id: product-service-category
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/categories/**
 #          filters:
 #            - AuthFilter
+        # Payment-service
         - id: payment-service
           uri: http://localhost:8082
           predicates:
             - Path=/api/payments/**
 #          filters:
 #            - AuthFilter
-        - id: orders-service
+        # Order-service
+        - id: orders-service-orders
           uri: http://localhost:8083
           predicates:
               - Path=/api/orders/**
+        - id: orders-service-carts
+          uri: http://localhost:8083
+          predicates:
+            - Path=/api/carts/**
       #          filters:
       #            - AuthFilter
       default-filters:
