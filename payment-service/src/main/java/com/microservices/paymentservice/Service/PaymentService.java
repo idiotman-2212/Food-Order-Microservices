@@ -1,7 +1,11 @@
 package com.microservices.paymentservice.Service;
 
+import com.google.gson.Gson;
+import com.microservices.paymentservice.Config.KafkaConstant;
 import com.microservices.paymentservice.Entity.OrderEntity;
+import com.microservices.paymentservice.Event.EventProducer;
 import com.microservices.paymentservice.Helper.OrderConverter;
+import com.microservices.paymentservice.Helper.PaymentNotFoundException;
 import com.microservices.paymentservice.Service.Imp.PaymentServiceImp;
 import com.microservices.paymentservice.Entity.PaymentEntity;
 import com.microservices.paymentservice.Entity.PaymentStatus;
@@ -9,8 +13,10 @@ import com.microservices.paymentservice.Helper.PaymentConverter;
 import com.microservices.paymentservice.Payload.Response.PaymentResponse;
 import com.microservices.paymentservice.Repository.OrderRepository;
 import com.microservices.paymentservice.Repository.PaymentRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,9 +24,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class PaymentService implements PaymentServiceImp {
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private EventProducer eventProducer;
+    Gson gson = new Gson();
 
 private final OrderConverter orderConverter;
     private final PaymentRepository paymentRepository;
@@ -32,24 +42,29 @@ private final OrderConverter orderConverter;
         this.paymentConverter = paymentConverter;
         this.orderConverter = orderConverter;
     }
+    // Trong phương thức thực hiện thanh toán
     @Override
-    public boolean createPayment(int idOrder, boolean isPayed, PaymentStatus paymentStatus) {
-        OrderEntity orderEntity = orderRepository.findById(idOrder).orElse(null);
-
-        if (orderEntity == null) {
-            return false;
-        }
-
+    public boolean createPayment(int idOrder,int idUser, boolean isPayed, PaymentStatus paymentStatus) {
         PaymentEntity paymentEntity = new PaymentEntity();
-        paymentEntity.setOrder(orderEntity);
+        paymentEntity.setOrderId(idOrder);
+        paymentEntity.setUserId(idUser);
         paymentEntity.setPayed(isPayed);
         paymentEntity.setPaymentStatus(paymentStatus);
         paymentEntity.setPaymentDate(new Date());
 
         paymentRepository.save(paymentEntity);
 
+        // Gửi sự kiện Payment Successful đến Kafka
+        PaymentResponse paymentResponse = new PaymentResponse();
+        paymentResponse.setOrderId(idOrder);
+        paymentResponse.setPayed(isPayed);
+        paymentResponse.setPaymentStatus(paymentStatus);
+        paymentResponse.setUserId(idUser);
+        eventProducer.send(KafkaConstant.STATUS_PAYMENT_SUCCESSFUL, gson.toJson(paymentResponse)).subscribe();
+
         return true;
     }
+
 
     @Override
     public List<PaymentResponse> getAllPayments() {
@@ -58,7 +73,6 @@ private final OrderConverter orderConverter;
 
         for (PaymentEntity paymentEntity : payments) {
             PaymentResponse paymentResponse = paymentConverter.toPaymentResponse(paymentEntity);
-            paymentResponse.setOrderResponse(orderConverter.toOrderResponse(paymentEntity.getOrder()));
             paymentResponses.add(paymentResponse);
         }
 
@@ -72,7 +86,7 @@ private final OrderConverter orderConverter;
     }
 
     @Override
-    public boolean updatePaymentById(int id, int idOrder, boolean idPayed, PaymentStatus paymentStatus) {
+    public boolean updatePaymentById(int id, int idOrder,int idUser, boolean idPayed, PaymentStatus paymentStatus) {
         Optional<PaymentEntity> optionalPayment = paymentRepository.findById(id);
         List<PaymentResponse> paymentResponses = new ArrayList<>();
 
@@ -81,10 +95,8 @@ private final OrderConverter orderConverter;
             existingPayment.setPayed(idPayed);
             existingPayment.setPaymentDate(new Date());
             existingPayment.setPaymentStatus(paymentStatus);
-
-            OrderEntity orderEntity = new OrderEntity();
-            orderEntity.setId(idOrder);
-            existingPayment.setOrder(orderEntity);
+            existingPayment.setUserId(idUser);
+            existingPayment.setOrderId(idOrder);
 
             paymentRepository.save(existingPayment);
             return true;

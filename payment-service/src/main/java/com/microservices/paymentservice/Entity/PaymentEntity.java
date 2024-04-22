@@ -14,10 +14,8 @@ public class PaymentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "order_id", referencedColumnName = "id")
-    private OrderEntity order;
+    private int orderId;
+    private int userId;
 
     @Column(name = "is_payed")
     private Boolean isPayed;
@@ -37,12 +35,20 @@ public class PaymentEntity {
         this.id = id;
     }
 
-    public OrderEntity getOrder() {
-        return order;
+    public int getOrderId() {
+        return orderId;
     }
 
-    public void setOrder(OrderEntity order) {
-        this.order = order;
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public Boolean getPayed() {

@@ -7,13 +7,15 @@ spring:
   cloud:
     gateway:
       routes:
+
         # User-service
         - id: user-service
           uri: http://localhost:8080
           predicates:
             - Path=/api/users/**
 #          filters:
-#            - AuthFilter
+#          - AuthFilter
+
         # Product-service
         - id: product-service-products
           uri: http://localhost:8081
@@ -24,14 +26,16 @@ spring:
           predicates:
             - Path=/api/categories/**
 #          filters:
-#            - AuthFilter
+#          - AuthFilter
+
         # Payment-service
         - id: payment-service
           uri: http://localhost:8082
           predicates:
             - Path=/api/payments/**
 #          filters:
-#            - AuthFilter
+#          - AuthFilter
+
         # Order-service
         - id: orders-service-orders
           uri: http://localhost:8083
@@ -41,8 +45,25 @@ spring:
           uri: http://localhost:8083
           predicates:
             - Path=/api/carts/**
-      #          filters:
-      #            - AuthFilter
+#          filters:
+#          - AuthFilter
+
+        # Notification-service
+        - id: notification-service
+          uri: http://localhost:8084
+          predicates:
+              - Path=/api/payments/**
+#         filters:
+#          - AuthFilter
+
+        # Favourite-service
+        - id: favourite-service
+          uri: http://localhost:8085
+          predicates:
+              - Path=/api/favourites/**
+#         filters:
+#          - AuthFilter
+
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
       globalcors:

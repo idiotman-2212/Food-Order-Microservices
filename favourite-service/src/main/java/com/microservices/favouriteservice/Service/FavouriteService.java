@@ -2,8 +2,6 @@ package com.microservices.favouriteservice.Service;
 
 import com.microservices.favouriteservice.Entity.FavouriteEntity;
 import com.microservices.favouriteservice.Payload.FavouriteResponse;
-import com.microservices.favouriteservice.Payload.ProductResponse;
-import com.microservices.favouriteservice.Payload.UserResponse;
 import com.microservices.favouriteservice.Repository.FavouriteRepository;
 import com.microservices.favouriteservice.Service.Imp.FavouriteServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;

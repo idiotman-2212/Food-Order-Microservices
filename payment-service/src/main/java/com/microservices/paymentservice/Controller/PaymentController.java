@@ -43,10 +43,11 @@ public class PaymentController {
     @PostMapping("")
     public ResponseEntity<?> createPayment(
             @RequestParam int idOrder,
+            @RequestParam int idUser,
             @RequestParam boolean isPayed,
             @RequestParam PaymentStatus paymentStatus) {
 
-        boolean result = paymentService.createPayment(idOrder, isPayed, paymentStatus);
+        boolean result = paymentService.createPayment(idOrder, idUser, isPayed, paymentStatus);
         BaseResponse baseResponse = new BaseResponse();
         if (result) {
             baseResponse.setStatusCode(200);
@@ -62,8 +63,8 @@ public class PaymentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updatePaymentById(@PathVariable int id, int idOrder, boolean idPayed, PaymentStatus paymentStatus) {
-        boolean updatedPayment = paymentService.updatePaymentById(id, idOrder, idPayed, paymentStatus);
+    public ResponseEntity<?> updatePaymentById(@PathVariable int id,@RequestParam int idOrder, @RequestParam int idUser, @RequestParam boolean idPayed,@RequestParam PaymentStatus paymentStatus) {
+        boolean updatedPayment = paymentService.updatePaymentById(id, idOrder, idUser, idPayed, paymentStatus);
 
         BaseResponse baseResponse = new BaseResponse();
         if (updatedPayment) {

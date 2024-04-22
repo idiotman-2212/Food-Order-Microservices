@@ -31,7 +31,8 @@ public class UserEntity {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<RoleEntity> roles = new HashSet<>();
 
-
+    @Column(name = "role_id")
+    private int roleId;
     private Date createDate;
 
     @PrePersist
@@ -102,4 +103,12 @@ public class UserEntity {
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
+    public int getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
+    }
+
 }

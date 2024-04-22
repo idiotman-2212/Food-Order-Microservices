@@ -1,0 +1,19 @@
+-Start zookeper:
+Start zookeeper bằng cách mở màn hình cmd và gõ zkserver
+
+-Start Kafka server:
+Mở màn hình CMD:
+- Di chuyển tới thư mục kafka bằng cách gõ “cd C:\app\kafka_2.13-3.7.0” và enter
+- Start kafka server bằng cách chạy lệnh “.\bin\windows\kafka-server-start.bat .\config\server.properties”
+
+-Tạo topic mới:
+C:\app\kafka_2.13-3.7.0\bin\windows\kafka-topics.bat --create --topic huydien --bootstrap-server localhost:9092
+
+-Xem list topic đã tạo:
+.\kafka-topics.bat --list --bootstrap-server localhost:9092
+
+-Tạo Producer:
+.\kafka-console-producer.bat --broker-list localhost:9092 --topic [tên_topic]
+
+-Tạo Consumer:
+.\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic [tên_topic] --from-beginning

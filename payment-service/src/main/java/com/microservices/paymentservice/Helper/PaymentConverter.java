@@ -18,7 +18,8 @@ public class PaymentConverter {
         paymentResponse.setId(paymentEntity.getId());
         paymentResponse.setPaymentStatus(paymentEntity.getPaymentStatus());
         paymentResponse.setPayed(paymentEntity.getPayed());
-        paymentResponse.setOrderResponse(orderConverter.toOrderResponse(paymentEntity.getOrder()));
+        paymentResponse.setOrderId(paymentEntity.getOrderId());
+        paymentResponse.setUserId(paymentEntity.getUserId());
         return paymentResponse;
     }
 
@@ -27,11 +28,8 @@ public class PaymentConverter {
         entity.setId(paymentResponse.getId());
         entity.setPayed(paymentResponse.getPayed());
         entity.setPaymentStatus(paymentResponse.getPaymentStatus());
-
-        OrderResponse orderResponse = paymentResponse.getOrderResponse();
-        if (orderResponse != null) {
-            entity.setOrder(orderConverter.toOrderEntity(orderResponse));
-        }
+        entity.setUserId(paymentResponse.getUserId());
+        entity.setOrderId(paymentResponse.getOrderId());
 
         return entity;
     }
