@@ -9,15 +9,13 @@ import com.microservice.orderservice.Payload.Response.OrderResponse;
 import com.microservice.orderservice.Payload.Response.ProductResponse;
 import com.microservice.orderservice.Repository.CartRepository;
 import com.microservice.orderservice.Repository.OrderRepository;
+import com.microservice.orderservice.Service.Imp.ApiResponse;
 import com.microservice.orderservice.Service.Imp.OrderServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class OrderService implements OrderServiceImp {
@@ -47,8 +45,8 @@ public class OrderService implements OrderServiceImp {
             orderResponse.setOrderDate(orderEntity.getOrderDate());
 
             // Gọi API để lấy thông tin sản phẩm
-            Mono<ProductResponse> productResponseMono = callAPI.getProductById(orderEntity.getProductId());
-            ProductResponse productResponse = productResponseMono.block(); // Block để đợi kết quả từ API
+            Mono<ApiResponse<ProductResponse>> productResponseMono = callAPI.getProductById(orderEntity.getProductId());
+            ProductResponse productResponse = Objects.requireNonNull(productResponseMono.block()).getData(); // Block để đợi kết quả từ API
 
             if (productResponse != null) {
                 orderResponse.setProductResponse(productResponse);
@@ -90,8 +88,8 @@ public class OrderService implements OrderServiceImp {
             orderResponse.setOrderFee(orderEntity.getOrderFee());
             orderResponse.setProductId(orderEntity.getProductId());
             // Fetch product asynchronously
-            Mono<ProductResponse> productResponseMono = callAPI.getProductById(orderEntity.getProductId());
-            ProductResponse productResponse = productResponseMono.block();
+            Mono<ApiResponse<ProductResponse>> productResponseMono = callAPI.getProductById(orderEntity.getProductId());
+            ProductResponse productResponse = Objects.requireNonNull(productResponseMono.block()).getData();
 
             if (productResponse != null) {
                 orderResponse.setProductResponse(productResponse);

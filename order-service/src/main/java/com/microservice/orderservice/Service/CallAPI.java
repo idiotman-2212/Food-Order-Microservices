@@ -2,7 +2,9 @@ package com.microservice.orderservice.Service;
 
 import com.microservice.orderservice.Payload.Response.ProductResponse;
 import com.microservice.orderservice.Payload.Response.UserResponse;
+import com.microservice.orderservice.Service.Imp.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -23,15 +25,13 @@ public class CallAPI {
 
     }
 
-    public Mono<ProductResponse> getProductById(int productId) {
-
+    public Mono<ApiResponse<ProductResponse>> getProductById(int productId) {
         return webClientBuilder.build()
                 .get()
                 .uri("http://localhost:8081/api/products/{productId}", productId)
                 .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .retrieve()
-                .bodyToMono(ProductResponse.class);
-
+                .bodyToMono(new ParameterizedTypeReference<ApiResponse<ProductResponse>>() {});
     }
 
 }
