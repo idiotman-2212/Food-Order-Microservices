@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 
 public class FavouriteResponse {
+    private int id;
 
     private Integer userId;
 
@@ -20,6 +21,14 @@ public class FavouriteResponse {
     private ProductResponse productResponse;
 
     private Date createDate;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Integer getUserId() {
         return userId;

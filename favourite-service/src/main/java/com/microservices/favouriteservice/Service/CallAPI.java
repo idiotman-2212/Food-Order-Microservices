@@ -1,8 +1,8 @@
-package com.microservice.orderservice.Service;
+package com.microservices.favouriteservice.Service;
 
-import com.microservice.orderservice.Payload.Response.ProductResponse;
-import com.microservice.orderservice.Payload.Response.UserResponse;
-import com.microservice.orderservice.Payload.Response.ApiResponse;
+import com.microservices.favouriteservice.Payload.ApiResponse;
+import com.microservices.favouriteservice.Payload.ProductResponse;
+import com.microservices.favouriteservice.Payload.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+
 @Component
 public class CallAPI {
     @Autowired
@@ -35,3 +36,4 @@ public class CallAPI {
     }
 
 }
+

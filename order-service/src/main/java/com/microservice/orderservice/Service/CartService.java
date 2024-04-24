@@ -6,6 +6,7 @@ import com.microservice.orderservice.Payload.Request.CartRequest;
 import com.microservice.orderservice.Payload.Response.CartResponse;
 import com.microservice.orderservice.Payload.Response.UserResponse;
 import com.microservice.orderservice.Repository.CartRepository;
+import com.microservice.orderservice.Payload.Response.ApiResponse;
 import com.microservice.orderservice.Service.Imp.CartServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -36,12 +38,12 @@ public class CartService implements CartServiceImp {
             cartResponse.setId(cartEntity.getId());
             cartResponse.setUserId(cartEntity.getUserId());
 
-            Mono<UserResponse> userResponseMono = callAPI.getUserById(cartEntity.getUserId(), "token");
-            UserResponse userResponse = userResponseMono.block();
-
+            // Gọi API để lấy thông tin giỏ hàng
+            Mono<ApiResponse<UserResponse>> userResponseMono = callAPI.getUserById(cartEntity.getUserId(), "token");
+            UserResponse userResponse = Objects.requireNonNull(userResponseMono.block()).getData();
             if (userResponse != null) {
                 cartResponse.setUserResponse(userResponse);
-            } else {
+            }else {
                 System.out.println("No user response for cart: " + cartEntity.getId());
             }
 
@@ -59,9 +61,14 @@ public class CartService implements CartServiceImp {
             cartResponse.setId(cartEntity.getId());
             cartResponse.setUserId(cartEntity.getUserId());
 
-            Mono<UserResponse> userResponse = callAPI.getUserById(cartEntity.getUserId(), "token");
-            cartResponse.setUserResponse(userResponse.block());
-
+            // Gọi API để lấy thông tin giỏ hàng
+            Mono<ApiResponse<UserResponse>> userResponseMono = callAPI.getUserById(cartEntity.getUserId(), "token");
+            UserResponse userResponse = Objects.requireNonNull(userResponseMono.block()).getData();
+            if (userResponse != null) {
+                cartResponse.setUserResponse(userResponse);
+            }else {
+                System.out.println("No user response for cart: " + cartEntity.getId());
+            }
             return cartResponse;
         } else {
             throw new RuntimeException("Cart not found with id: " + cartId);

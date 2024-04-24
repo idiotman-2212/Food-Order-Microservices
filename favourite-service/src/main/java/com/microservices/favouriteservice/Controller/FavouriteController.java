@@ -17,7 +17,7 @@ public class FavouriteController {
     private FavouriteService favouriteService;
 
     @GetMapping("")
-    public ResponseEntity<?> getAllRoles(){
+    public ResponseEntity<?> getAllFavourite(){
         List<FavouriteResponse> list = favouriteService.findAll();
         BaseResponse baseResponse = new BaseResponse();
         baseResponse.setMessage("Get all favourite");
@@ -27,6 +27,16 @@ public class FavouriteController {
         return new ResponseEntity<>(baseResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getFavouriteById(@PathVariable int id){
+        List<FavouriteResponse> list = favouriteService.findById(id);
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.setMessage("Get favourite by id");
+        baseResponse.setData(list);
+        baseResponse.setStatusCode(200);
+
+        return new ResponseEntity<>(baseResponse, HttpStatus.OK);
+    }
     @PostMapping("")
     public ResponseEntity<BaseResponse> addFavourite(@RequestParam int idProduct, @RequestParam int idUser) {
         boolean isAdded = favouriteService.save(idProduct, idUser);
