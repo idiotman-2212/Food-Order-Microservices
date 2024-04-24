@@ -2,7 +2,11 @@ package com.microservice.orderservice.Service;
 
 import com.microservice.orderservice.Payload.Response.ProductResponse;
 import com.microservice.orderservice.Payload.Response.UserResponse;
+<<<<<<< HEAD
 import com.microservice.orderservice.Payload.Response.ApiResponse;
+=======
+import com.microservice.orderservice.Service.Imp.ApiResponse;
+>>>>>>> b27e5d54e0d6242ea03094e73f1fc74ea07b9ff1
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
