@@ -9,11 +9,7 @@ import com.microservice.orderservice.Payload.Response.OrderResponse;
 import com.microservice.orderservice.Payload.Response.ProductResponse;
 import com.microservice.orderservice.Repository.CartRepository;
 import com.microservice.orderservice.Repository.OrderRepository;
-<<<<<<< HEAD
 import com.microservice.orderservice.Payload.Response.ApiResponse;
-=======
-import com.microservice.orderservice.Service.Imp.ApiResponse;
->>>>>>> b27e5d54e0d6242ea03094e73f1fc74ea07b9ff1
 import com.microservice.orderservice.Service.Imp.OrderServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

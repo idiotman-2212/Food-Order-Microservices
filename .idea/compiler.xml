@@ -20,7 +20,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="Food Order Microservices" options="-parameters" />
+      <module name="Food Order Microservices" options="" />
       <module name="api-gateway" options="-parameters" />
       <module name="discovery-server" options="-parameters" />
       <module name="favourite-service" options="-parameters" />
