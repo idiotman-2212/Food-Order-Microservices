@@ -1,9 +1,11 @@
 package com.microservices.userservice.Entity;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -16,8 +18,8 @@ public class RoleEntity {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @ManyToMany(mappedBy = "roles")
-    private Set<UserEntity> users = new HashSet<>();
+    @OneToMany(mappedBy = "role")
+    private List<UserEntity> users;
 
     @Column(name = "create_date")
     private Date createDate;
@@ -57,11 +59,11 @@ public class RoleEntity {
         this.createDate = createDate;
     }
 
-    public Set<UserEntity> getUsers() {
+    public List<UserEntity> getUsers() {
         return users;
     }
 
-    public void setUsers(Set<UserEntity> users) {
+    public void setUsers(List<UserEntity> users) {
         this.users = users;
     }
 }

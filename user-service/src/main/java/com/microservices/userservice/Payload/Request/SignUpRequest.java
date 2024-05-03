@@ -24,8 +24,7 @@ public class SignUpRequest {
     @Pattern(regexp = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}" )
     private String password;
 
-    private Set<String> roles;
-
+    private int idRole;
     private Date createDate;
     private String phone;
     private String address;
@@ -67,12 +66,12 @@ public class SignUpRequest {
         this.password = password;
     }
 
-    public Set<String> getRoles() {
-        return roles;
+    public int getIdRole() {
+        return idRole;
     }
 
-    public void setRoles(Set<String> roles) {
-        this.roles = roles;
+    public void setIdRole(int idRole) {
+        this.idRole = idRole;
     }
 
     public Date getCreateDate() {

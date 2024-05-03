@@ -64,6 +64,22 @@ spring:
 #         filters:
 #          - AuthFilter
 
+        # Login, SignUp
+        - id: signIn-signUp
+          uri: http://localhost:8080
+          predicates:
+            - Path=/login/**
+#         filters:
+#          - AuthFilter
+
+        # Admin
+        - id: admin
+          uri: http://localhost:8080
+          predicates:
+              - Path=/admin/**
+#         filters:
+#          - AuthFilter
+
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
       globalcors:

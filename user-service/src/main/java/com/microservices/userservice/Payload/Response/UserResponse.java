@@ -11,8 +11,7 @@ public class UserResponse {
     private  String password;
     private String phone;
     private String address;
-
-    private Set<String> roles;
+    private int roles;
 
     public int getId() {
         return id;
@@ -70,11 +69,11 @@ public class UserResponse {
         this.address = address;
     }
 
-    public Set<String> getRoles() {
+    public int getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<String> roles) {
+    public void setRoles(int roles) {
         this.roles = roles;
     }
 }

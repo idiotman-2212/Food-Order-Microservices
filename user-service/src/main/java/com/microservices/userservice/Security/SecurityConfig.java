@@ -51,13 +51,7 @@ public class SecurityConfig {
                 // các thằng dưới là con của thằng trên ----- Matchers là so sánh kiểm tra dữ liệu
                 //permitALl() : nếu có .per thì link này ai gọi cũng được tất cả (ALL)
                 .requestMatchers("/**").permitAll()
-
-
-                /*.requestMatchers(HttpMethod.POST, "/product").hasRole("ADMIN") // link /product với phương thức POST phải có role ADMIN mới truy cập được
-                .requestMatchers(HttpMethod.GET, "/product").permitAll()
-                .requestMatchers(HttpMethod.PUT, "/product").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.GET, "/cart").hasRole("USER")*/
-
+                
 
                 .anyRequest().authenticated()// Tất cả các link còn lại cần phải chứng thực
                 .and()
@@ -71,10 +65,7 @@ public class SecurityConfig {
                             // Kiểm tra role của người dùng và chuyển hướng tương ứng
                             if (authentication.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("ADMIN"))) {
                                 response.sendRedirect("/admin");
-                            } else if (authentication.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("USER") || r.getAuthority().equals("MEMBER"))) {
-                                response.sendRedirect("/");
                             } else {
-                                // Nếu không có role nào khớp, chuyển hướng mặc định
                                 response.sendRedirect("/");
                             }
                         })

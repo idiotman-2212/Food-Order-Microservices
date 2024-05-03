@@ -3,7 +3,7 @@ package com.microservices.userservice.Payload.Response;
 import java.util.Date;
 
 public class RoleResponse {
-    private  int id;
+    private int id;
     private String name;
     private Date createDate;
 
@@ -30,4 +30,5 @@ public class RoleResponse {
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
+
 }

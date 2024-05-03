@@ -25,11 +25,9 @@ public class UserEntity {
     @Column
     private String address;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<RoleEntity> roles = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private RoleEntity role;
 
     private Date createDate;
 
@@ -86,12 +84,12 @@ public class UserEntity {
         this.address = address;
     }
 
-    public Set<RoleEntity> getRoles() {
-        return roles;
+    public RoleEntity getRole() {
+        return role;
     }
 
-    public void setRoles(Set<RoleEntity> roles) {
-        this.roles = roles;
+    public void setRole(RoleEntity role) {
+        this.role = role;
     }
 
     public Date getCreateDate() {

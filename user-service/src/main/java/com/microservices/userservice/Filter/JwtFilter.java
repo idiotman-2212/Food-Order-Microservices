@@ -45,7 +45,7 @@ public class JwtFilter extends OncePerRequestFilter {
             System.out.println("Kiem tra " + data);
         }catch (Exception e){
 //            Token không hợp lệ
-            System.out.println("token không hợp lệ");
+            //System.out.println("token không hợp lệ");
         }
 
 //        Cho phép đi vào link người dùng muốn truy cập

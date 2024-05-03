@@ -42,7 +42,7 @@ public class UserService implements UserServiceImp {
 
         // Set default role for the user if found
         RoleEntity defaultRole = roleRepository.findByName("USER").orElseThrow(() -> new RuntimeException("Default role not found"));
-        newUser.getRoles().add(defaultRole);
+        newUser.setRole(defaultRole);
         newUser.setCreateDate(new Date());
 
         userRepository.save(newUser);
@@ -60,9 +60,8 @@ public class UserService implements UserServiceImp {
             userResponse.setUsername(u.getUsername());
             userResponse.setEmail(u.getEmail());
 
-            // Lấy danh sách vai trò của người dùng và chuyển đổi thành danh sách tên vai trò
-            Set<String> roles = u.getRoles().stream().map(RoleEntity::getName).collect(Collectors.toSet());
-            userResponse.setRoles(roles);
+            RoleEntity roleEntity = u.getRole();
+            userResponse.setRoles(roleEntity.getId());
 
             userResponse.setAddress(u.getAddress());
             userResponse.setPhone(u.getPhone());
@@ -88,12 +87,9 @@ public class UserService implements UserServiceImp {
             response.setEmail(userEntity.getEmail());
             response.setAddress(userEntity.getAddress());
             response.setPhone(userEntity.getPhone());
-            // Chuyển đổi từ Set<RoleEntity> sang Set<String>
-            Set<String> roles = userEntity.getRoles().stream()
-                    .map(RoleEntity::getName)
-                    .collect(Collectors.toSet());
 
-            response.setRoles(roles);
+            RoleEntity roles = new RoleEntity();
+            response.setRoles(roles.getId());
 
             response.setCreateDate(userEntity.getCreateDate());
 
@@ -101,11 +97,6 @@ public class UserService implements UserServiceImp {
         }else {
             throw new EntityNotFoundException("User with ID " + id + " not found");
         }
-    }
-
-    @Override
-    public List<UserResponse> searchUsers(String query) {
-        return null;
     }
 
     @Override
@@ -120,36 +111,31 @@ public class UserService implements UserServiceImp {
 
     @Override
     public boolean updateUser(int id, UserEntity userRequest) {
-        Optional<UserEntity> optional = userRepository.findById(id);
+        Optional<UserEntity> optionalUser = userRepository.findById(id);
 
-        if (optional.isPresent()) {
-            UserEntity userEntity = optional.get();
+        if (optionalUser.isPresent()) {
+            UserEntity existingUser = optionalUser.get();
 
-            userEntity.setUsername(userRequest.getUsername());
-            userEntity.setEmail(userRequest.getEmail());
-            userEntity.setAddress(userRequest.getAddress());
-            userEntity.setPhone(userRequest.getPhone());
+            existingUser.setUsername(userRequest.getUsername());
+            existingUser.setEmail(userRequest.getEmail());
+            existingUser.setAddress(userRequest.getAddress());
+            existingUser.setPhone(userRequest.getPhone());
 
             if (userRequest.getPassword() != null && !userRequest.getPassword().isEmpty()) {
                 String encodedPassword = passwordEncoder.encode(userRequest.getPassword());
-                userEntity.setPassword(encodedPassword);
-            }
-            if (userRequest.getRoles() != null) {
-                Set<RoleEntity> updatedRoles = new HashSet<>();
-                for (RoleEntity role : userRequest.getRoles()) {
-                    RoleEntity existingRole = roleRepository.findByName(role.getName()).get();
-
-                    if (existingRole != null) {
-                        updatedRoles.add(existingRole);
-                    } else {
-                    }
-                }
-                userEntity.setRoles(updatedRoles);
+                existingUser.setPassword(encodedPassword);
             }
 
-            userEntity.setCreateDate(new Date());
+            RoleEntity requestedRole = userRequest.getRole();
+            if (requestedRole != null) {
+                RoleEntity existingRole = roleRepository.findById(requestedRole.getId())
+                        .orElseThrow(() -> new EntityNotFoundException("Role not found"));
+                existingUser.setRole(existingRole);
+            }
 
-            UserEntity updatedUser = userRepository.save(userEntity);
+            existingUser.setCreateDate(new Date());
+
+            userRepository.save(existingUser);
 
             return true;
         } else {
@@ -157,5 +143,21 @@ public class UserService implements UserServiceImp {
         }
     }
 
+    @Override
+    public List<UserResponse> searchUsers(String keyword) {
+        List<UserEntity> list = userRepository.searchUsers(keyword);
+        List<UserResponse> responseList = new ArrayList<>();
+
+        for (UserEntity u : list) {
+            UserResponse userResponse = new UserResponse();
+            userResponse.setId(u.getId());
+            userResponse.setUsername(u.getUsername());
+            userResponse.setEmail(u.getEmail());
+            userResponse.setCreateDate(u.getCreateDate());
+            responseList.add(userResponse);
+        }
+
+        return responseList;
+    }
 
 }

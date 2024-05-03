@@ -48,11 +48,11 @@ public class CustomAuthenProvider implements AuthenticationProvider {
             // Kiểm tra mật khẩu
             if (password != null && passwordEncoder.matches(password, user.getPassword())) {
                 // Tạo chứng thực --- GrantedAuthority một class chứng thực của SS
-                Set<RoleEntity> roles = user.getRoles();
+
                 List<GrantedAuthority> authorities = new ArrayList<>();
-                for (RoleEntity role : roles) {
-                    authorities.add(new SimpleGrantedAuthority(role.getName()));
-                }
+                GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(user.getRole().getName());
+                authorities.add(grantedAuthority);
+
                 // Tạo chứng thực cho security
                 UsernamePasswordAuthenticationToken token =
                         new UsernamePasswordAuthenticationToken(username, user.getPassword(), authorities);

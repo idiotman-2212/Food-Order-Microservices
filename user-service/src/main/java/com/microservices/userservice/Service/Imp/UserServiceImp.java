@@ -13,9 +13,10 @@ public interface UserServiceImp {
 
     UserResponse getUserById(int id);
 
-    List<UserResponse> searchUsers(String query);
+    List<UserResponse> searchUsers(String keyword);
 
     boolean deleteUserById(int id);
 
     boolean updateUser(int id, UserEntity userRequest);
+
 }
