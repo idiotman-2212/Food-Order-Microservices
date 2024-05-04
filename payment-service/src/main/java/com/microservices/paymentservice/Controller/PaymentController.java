@@ -2,9 +2,12 @@ package com.microservices.paymentservice.Controller;
 
 import com.microservices.paymentservice.Entity.PaymentStatus;
 import com.microservices.paymentservice.Helper.PaymentConverter;
+import com.microservices.paymentservice.Payload.Request.PaymentRequest;
 import com.microservices.paymentservice.Payload.Response.BaseResponse;
 import com.microservices.paymentservice.Payload.Response.PaymentResponse;
 import com.microservices.paymentservice.Service.PaymentService;
+import com.microservices.paymentservice.Service.VNPayService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +20,9 @@ import java.util.List;
 public class PaymentController {
     @Autowired
     private PaymentService paymentService;
+
     @Autowired
-    private PaymentConverter paymentConverter;
+    private VNPayService vnpayService;
 
     @GetMapping("")
     public ResponseEntity<?> getAllPayments(){
@@ -93,5 +97,34 @@ public class PaymentController {
             baseResponse.setMessage("Payment not found");
             return new ResponseEntity<>(baseResponse, HttpStatus.NOT_FOUND);
         }
+    }
+
+
+    // Trường hợp VNPay
+    @PostMapping("/vnpay/create")
+    public ResponseEntity<?> createVnPayPayment(@RequestBody PaymentRequest paymentRequest, HttpServletRequest request) {
+        String paymentUrl = vnpayService.createOrder(request, paymentRequest.getTotal(), paymentRequest.getOrderInfo(), paymentRequest.getUrlReturn());
+        BaseResponse response = new BaseResponse();
+        response.setStatusCode(HttpStatus.OK.value());
+        response.setMessage("Payment created successfully");
+        response.setData(paymentUrl);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/vnpay/callback")
+    public ResponseEntity<?> handleCallback(HttpServletRequest request) {
+        int result = vnpayService.orderReturn(request);
+        String message;
+        if (result == 1) {
+            message = "Payment success!";
+        } else if (result == 0) {
+            message = "Payment failed!";
+        } else {
+            message = "Invalid signature!";
+        }
+        BaseResponse response = new BaseResponse();
+        response.setStatusCode(HttpStatus.OK.value());
+        response.setMessage(message);
+        return ResponseEntity.ok(response);
     }
 }
