@@ -1,6 +1,8 @@
 -Start zookeper:
 Start zookeeper bằng cách mở màn hình cmd và gõ zkserver
 
+zookeeper-server-start.bat C:\app\kafka_2.13-3.7.0\config\zookeeper.properties
+
 -Start Kafka server:
 Mở màn hình CMD:
 - Di chuyển tới thư mục kafka bằng cách gõ “cd C:\app\kafka_2.13-3.7.0” và enter
@@ -17,3 +19,9 @@ C:\app\kafka_2.13-3.7.0\bin\windows\kafka-topics.bat --create --topic huydien --
 
 -Tạo Consumer:
 .\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic [tên_topic] --from-beginning
+
+- Đọc tất cả các message của một topic:
+kafka-console-consumer.bat –zookeeper localhost:2181 –topic [Topic Name] –from-beginning
+
+- Xóa một topic:
+kafka-run-class.bat kafka.admin.TopicCommand –delete –topic [topic_to_delete] –zookeeper localhost:2181

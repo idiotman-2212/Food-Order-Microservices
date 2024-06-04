@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  api-gateway:
+    image: api-gateway-image
+    ports:
+      - 9000:9000
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev

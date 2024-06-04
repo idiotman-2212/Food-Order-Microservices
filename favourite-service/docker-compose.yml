@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  favourite-service:
+    image: favourite-service-image
+    ports:
+      - 8085:8085
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev

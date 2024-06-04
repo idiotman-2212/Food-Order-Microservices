@@ -2,7 +2,6 @@ package com.microservices.notificationservice.Controller;
 
 import com.microservices.notificationservice.Entity.NotificationEntity;
 import com.microservices.notificationservice.Payload.BaseResponse;
-import com.microservices.notificationservice.Payload.PaymentResponse;
 import com.microservices.notificationservice.Service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

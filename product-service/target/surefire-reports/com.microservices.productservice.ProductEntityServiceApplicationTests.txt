@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.microservices.productservice.ProductEntityServiceApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 15.21 s -- in com.microservices.productservice.ProductEntityServiceApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 13.06 s -- in com.microservices.productservice.ProductEntityServiceApplicationTests

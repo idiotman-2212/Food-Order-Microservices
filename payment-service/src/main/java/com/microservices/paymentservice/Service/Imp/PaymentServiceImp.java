@@ -7,7 +7,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 public interface PaymentServiceImp {
-    boolean createPayment(int idOrder, int idUser, boolean idPayed, PaymentStatus paymentStatus);
+    Mono<Boolean> createPayment(int idOrder, int idUser, boolean idPayed, PaymentStatus paymentStatus);
     List<PaymentResponse> getAllPayments();
     PaymentResponse getPaymentById(int id);
     boolean updatePaymentById(int id, int idOrder,int idUser, boolean idPayed, PaymentStatus paymentStatus);

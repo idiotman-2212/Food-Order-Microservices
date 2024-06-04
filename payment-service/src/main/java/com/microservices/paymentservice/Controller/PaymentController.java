@@ -45,25 +45,13 @@ public class PaymentController {
         return new ResponseEntity<>(baseResponse, HttpStatus.OK);
     }*/
     @PostMapping("")
-    public ResponseEntity<?> createPayment(
-            @RequestParam int idOrder,
-            @RequestParam int idUser,
-            @RequestParam boolean isPayed,
-            @RequestParam PaymentStatus paymentStatus) {
-
-        boolean result = paymentService.createPayment(idOrder, idUser, isPayed, paymentStatus);
+    public ResponseEntity<?> createPayment(@RequestParam int idOrder, @RequestParam int idUser, @RequestParam boolean idPayed, @RequestParam PaymentStatus paymentStatus) {
+        boolean isSuccess = paymentService.createPayment(idOrder, idUser, idPayed, paymentStatus).block();
         BaseResponse baseResponse = new BaseResponse();
-        if (result) {
-            baseResponse.setStatusCode(200);
-            baseResponse.setMessage("Payment created successfully");
-            baseResponse.setData(result);
-            return new ResponseEntity<>(baseResponse,HttpStatus.OK);
-        } else {
-            baseResponse.setStatusCode(404);
-            baseResponse.setMessage("Order not found");
-            baseResponse.setData(result);
-            return new ResponseEntity(baseResponse,HttpStatus.BAD_REQUEST);
-        }
+        baseResponse.setData(isSuccess);
+        baseResponse.setMessage("Create payment");
+        baseResponse.setStatusCode(HttpStatus.OK.value());
+        return ResponseEntity.ok(baseResponse);
     }
 
     @PutMapping("/{id}")

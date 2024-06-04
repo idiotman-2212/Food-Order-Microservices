@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.microservice.orderservice.OrderServiceApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 11.39 s -- in com.microservice.orderservice.OrderServiceApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 14.85 s -- in com.microservice.orderservice.OrderServiceApplicationTests

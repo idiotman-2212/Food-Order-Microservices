@@ -44,25 +44,18 @@ private final OrderConverter orderConverter;
     }
     // Trong phương thức thực hiện thanh toán
     @Override
-    public boolean createPayment(int idOrder,int idUser, boolean isPayed, PaymentStatus paymentStatus) {
+    public Mono<Boolean> createPayment(int orderId, int idUser, boolean idPayed, PaymentStatus paymentStatus) {
         PaymentEntity paymentEntity = new PaymentEntity();
-        paymentEntity.setOrderId(idOrder);
+        paymentEntity.setOrderId(orderId);
         paymentEntity.setUserId(idUser);
-        paymentEntity.setPayed(isPayed);
+        paymentEntity.setPayed(idPayed);
         paymentEntity.setPaymentStatus(paymentStatus);
         paymentEntity.setPaymentDate(new Date());
 
-        paymentRepository.save(paymentEntity);
-
-        // Gửi sự kiện Payment Successful đến Kafka
-        PaymentResponse paymentResponse = new PaymentResponse();
-        paymentResponse.setOrderId(idOrder);
-        paymentResponse.setPayed(isPayed);
-        paymentResponse.setPaymentStatus(paymentStatus);
-        paymentResponse.setUserId(idUser);
-        eventProducer.send(KafkaConstant.STATUS_PAYMENT_SUCCESSFUL, gson.toJson(paymentResponse)).subscribe();
-
-        return true;
+        return Mono.fromCallable(() -> {
+            paymentRepository.save(paymentEntity);
+            return true;
+        });
     }
 
 

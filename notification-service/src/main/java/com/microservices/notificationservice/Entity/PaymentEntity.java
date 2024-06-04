@@ -7,6 +7,7 @@ import java.util.Date;
 @Entity(name = "payments")
 public class PaymentEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private Boolean isPayed;
     private PaymentStatus paymentStatus;
