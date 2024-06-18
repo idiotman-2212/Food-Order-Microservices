@@ -5,7 +5,7 @@
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.0   | :white_check_mark:IOS 17.2 |
+| 1.0   | :white_check_mark:Windows 11 |
 
 
 ## Reporting a Vulnerability
